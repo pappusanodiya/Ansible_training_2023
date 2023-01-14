@@ -1,0 +1,32 @@
+- hosts: web
+  vars:
+    - webPage: "index.html"
+    - packageName: "httpd"
+    - documentDir: "/var/www/lw"
+
+  tasks:
+    - name: installed httpd package
+      package:
+        name: "{{ packageName }}"
+        state: present
+
+    - name: create doc root
+      file:
+        state: directory
+        path: "{{ documentDir }}"
+
+    - name: setting conf file
+      copy:
+        dest: "/etc/httpd/conf.d/my.conf"
+        content: "documentroot {{ documentDir }}\n"
+
+    - name: deploy web page
+      copy:
+        src: "{{ webPage }}"
+        dest: "{{ documentDir }}"
+
+    - name: reload service
+      service:
+        name: "httpd"
+        state: reloaded
+        enabled: true
