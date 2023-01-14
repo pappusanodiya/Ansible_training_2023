@@ -1,0 +1,8 @@
+- hosts: localhost
+  vars:
+    - x: 5
+    - y: 10
+
+  tasks:
+    - debug:
+        msg: "hi i am pappu {{ x }} tc bye"
